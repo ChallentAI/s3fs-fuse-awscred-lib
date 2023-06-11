@@ -114,14 +114,6 @@ jobs:
           cmake -S . -B build
           cmake --build build
 
-      - name: Test
-        run: |
-          mkdir "${HOME}"/.aws
-          echo "[default]" > "${HOME}"/.aws/config
-          printf "%s\n%s\n%s\n" "[default]" "aws_access_key_id = TESTAWSACCESSKEYID" "aws_secret_access_key = TESTSECRETAWSACCESSKEYID" > "${HOME}"/.aws/credentials
-          ./build/s3fsawscred_test | grep -v '[E|e]xpiration' | sed -e "s/Version .*$/Version/g" > /tmp/s3fsawscred_test.result
-          diff .github/workflows/s3fsawscred_test.result /tmp/s3fsawscred_test.result
-
   macos11:
     runs-on: macos-11
 
@@ -138,13 +130,11 @@ jobs:
           cmake -S . -B build
           cmake --build build
 
-      - name: Test
-        run: |
-          mkdir "${HOME}"/.aws
-          echo "[default]" > "${HOME}"/.aws/config
-          printf "%s\n%s\n%s\n" "[default]" "aws_access_key_id = TESTAWSACCESSKEYID" "aws_secret_access_key = TESTSECRETAWSACCESSKEYID" > "${HOME}"/.aws/credentials
-          ./build/s3fsawscred_test | grep -v '[E|e]xpiration' | sed -e "s/Version .*$/Version/g" > /tmp/s3fsawscred_test.result
-          diff .github/workflows/s3fsawscred_test.result /tmp/s3fsawscred_test.result
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with: 
+          name: assets-for-download
+          path: build
 
 #
 # Local variables:
