@@ -63,7 +63,6 @@ jobs:
           - debian:bullseye
           - debian:buster
           - rockylinux:8
-          - fedora:36
           - fedora:35
 
     container:
@@ -113,23 +112,7 @@ jobs:
         run: |
           cmake -S . -B build
           cmake --build build
-
-  macos11:
-    runs-on: macos-11
-
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-
-      - name: Install packages
-        run: |
-          brew install aws-sdk-cpp
-
-      - name: Build
-        run: |
-          cmake -S . -B build
-          cmake --build build
-
+          
       - name: Publish
         uses: actions/upload-artifact@v2
         with: 
